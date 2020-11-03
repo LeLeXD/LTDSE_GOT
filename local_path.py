@@ -1,1 +1,1 @@
-base_path ='/content/LTDSE_GOT/'
+base_path ='/content/LT_DSE/'
