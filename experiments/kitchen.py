@@ -23,8 +23,8 @@ class ExperimentKitchen(object):
         self.nbins_ce = 51
 
     def run(self, tracker, visualize=False):
-        print('Running tracker %s on %s...' % (
-            tracker.name, type(self.dataset).__name__))
+        print('Running tracker LTDSE on %s...' % (
+            type(self.dataset).__name__))
 
         # loop over the complete dataset
         for s, (img_files, anno) in enumerate(self.dataset):
@@ -33,18 +33,19 @@ class ExperimentKitchen(object):
 
             # skip if results exist
             record_file = os.path.join(
-                self.result_dir, tracker.name, '%s.txt' % seq_name)
+                self.result_dir, "LTDSE", '%s.txt' % seq_name)
             if os.path.exists(record_file):
                 print('  Found results, skipping', seq_name)
                 continue
-
+            
             # tracking loop
             boxes, times = tracker.track(
-                img_files, anno[0, :], visualize=visualize)
+                img_files, anno[0, :], seq_name, visualize=visualize)
             assert len(boxes) == len(anno)
             
             # record results
             self._record(record_file, boxes, times)
+
 
     def report(self, tracker_names, plot_curves=True):
         assert isinstance(tracker_names, (list, tuple))
